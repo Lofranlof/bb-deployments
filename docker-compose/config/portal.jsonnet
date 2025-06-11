@@ -8,8 +8,7 @@
 
 {
   frontendProxyUrl: 'http://portal-frontend:3000',
-  allowedOrigins: ['http://localhost:3000', 'http://portal-frontend:3000', 'http://worker01-node.rdavletov.crpt.cloud:3000'],
-
+  allowedOrigins: ['http://portal-frontend:3000', 'http://worker01-node.rdavletov.crpt.cloud:3000', 'http://worker01-node.rdavletov.crpt.cloud:8081'],
   serveFilesCasConfiguration: {
     grpc: { address: 'frontend:8980' },
   },

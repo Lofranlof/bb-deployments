@@ -104,13 +104,29 @@ services:
 
 
   portal-frontend:
-    image: ghcr.io/buildbarn/bb-portal-frontend:b494d88e2d0ed3ff3c25302c1f156599b19f679b
+    image: ghcr.io/buildbarn/bb-portal-frontend:cd933190e49a48f6ba41a7410408f77aef471e47
     volumes:
     - ./config:/config
     depends_on:
     - portal-backend
+    expose:
+    - 3000
+    ports:
+    - 3000:3000
+    environment:
+      - NEXT_PUBLIC_BROWSER_URL=http://worker01-node.rdavletov.crpt.cloud:7984
+      - NEXT_PUBLIC_BES_BACKEND_URL=http://worker01-node.rdavletov.crpt.cloud:8081
+      - NEXT_PUBLIC_BES_GRPC_BACKEND_URL=grpc://worker01-node.rdavletov.crpt.cloud:8082
 
   portal-backend:
     image: ghcr.io/buildbarn/bb-portal-backend:20250610t154514z-b494d88
+    command: 
+    - --config-file=/config/portal.jsonnet
     volumes:
     - ./config:/config
+    expose:
+    - 8081
+    - 8082
+    ports:
+    - 8081:8081
+    - 8082:8082
