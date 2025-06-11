@@ -102,27 +102,15 @@ services:
     depends_on:
     - runner-installer
 
-  # For situations where the more efficient FUSE worker is not supported,
-  # the classic hardlinking example is shown here.
-  worker-hardlinking-ubuntu22-04:
-    image: ghcr.io/buildbarn/bb-worker:20250411T124310Z-1c726bd
-    command:
-    - /config/worker-hardlinking-ubuntu22-04.jsonnet
-    privileged: false
-    volumes:
-    - ./config:/config
-    - ./volumes/worker-hardlinking-ubuntu22-04:/worker
 
-  runner-hardlinking-ubuntu22-04:
-    image: ghcr.io/catthehacker/ubuntu:act-22.04@sha256:5f9c35c25db1d51a8ddaae5c0ba8d3c163c5e9a4a6cc97acd409ac7eae239448
-    command:
-    - sh
-    - -c
-    - while ! test -f /bb/installed; do sleep 1; done; exec /bb/tini -v -- /bb/bb_runner /config/runner-ubuntu22-04.jsonnet
-    network_mode: none
+  portal-frontend:
+    image: ghcr.io/buildbarn/bb-portal-frontend:b494d88e2d0ed3ff3c25302c1f156599b19f679b
     volumes:
     - ./config:/config
-    - ./volumes/bb:/bb
-    - ./volumes/worker-hardlinking-ubuntu22-04:/worker
     depends_on:
-    - runner-installer
+    - portal-backend
+
+  portal-backend:
+    image: ghcr.io/buildbarn/bb-portal-backend:20250610t154514z-b494d88
+    volumes:
+    - ./config:/config
